@@ -11,23 +11,18 @@
 #include <dlfcn.h>
 #include <EGL/egl.h>
 #include <GLES2/gl2.h>
-//#include "Includes/Logger.h"
 #include "Includes/obfuscate.h"
 #include "Includes/Utils.h"
 #include "KittyMemory/MemoryPatch.h"
 #include "Dobby/dobby.h"
-//#include "Color.h"
 #include "Includes/Macros.h"
 #include "imgui.h"
 //#include "imgui_internal.h"
 #include "backends/imgui_impl_opengl3.h"
 #include "backends/imgui_impl_android.h"
-//#define targetLibName OBFUSCATE("libil2cpp.so")
-//#include "ByNameModding/BNM.hpp"
 
 int glHeight, glWidth;
 bool setup;
-//uintptr_t address;
 
 #define HOOKAF(ret, func, ...) \
     ret (*old_##func)(__VA_ARGS__); \
@@ -39,6 +34,7 @@ HOOKAF(void, Input, void *thiz, void *ex_ab, void *ex_ac) {
     ImGui_ImplAndroid_HandleInputEvent((AInputEvent *)thiz);
 }
 
+//make new window
 void myview(){
     ImGui::SetNextWindowPos(ImVec2(0,0), ImGuiCond_Always, ImVec2(0,0));
 	ImGui::SetNextWindowSize(ImVec2(glWidth,glHeight), 0);
@@ -78,7 +74,6 @@ HOOKAF(EGLBoolean,eglSwapBuffers,EGLDisplay dpy, EGLSurface surface) {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui::NewFrame();
     //Render ImGui windows here.
-    
     myview();
     ImGui::ShowDemoWindow();
     //Rendering

@@ -39,7 +39,7 @@ void myview(){
     ImGui::SetNextWindowPos(ImVec2(0,0), ImGuiCond_Always, ImVec2(0,0));
 	ImGui::SetNextWindowSize(ImVec2(glWidth,glHeight), 0);
     ImGui::Begin("",0,ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoMove);
-    ImGui::Text(obf("Testting"));
+    ImGui::Text(obf("Testtttt"));
     ImGui::End();
 }
 

@@ -43,18 +43,19 @@ ImVec4 hexcolor(const char* h){
     return ImVec4((float)r/255.0f,(float)g/255.0f,(float)b/255.0f,(float)a/255.0f);
 }
 
-int a = 0;
+//int a = 0;
 
 //make new window
-void myview(){
-    ImVec4* colors = ImGui::GetStyle().Colors;
-    ImGui::SetNextWindowPos(ImVec2(100,100), ImGuiCond_Always, ImVec2(0,0));
+void mywindow(){
+    //ImVec4* colors = ImGui::GetStyle().Colors;
+    //ImGui::SetNextWindowPos(ImVec2(100,100), ImGuiCond_Always, ImVec2(0,0));
 	ImGui::SetNextWindowSize(ImVec2(500,500), 0);
-    ImGui::Begin("",0,ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoMove);
-    colors[ImGuiCol_Text] = COLOR("ff0000ff");
-    ImGui::Text(std::to_string(a).c_str());
+    ImGui::Begin("",0);
+    //ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoMove);
+    //colors[ImGuiCol_Text] = COLOR("ff0000ff");
+    ImGui::Text("testing");
     ImGui::End();
-    a++;
+    //a++;
 }
 
 void SetupImgui() {
@@ -88,8 +89,8 @@ HOOKAF(EGLBoolean,eglSwapBuffers,EGLDisplay dpy, EGLSurface surface) {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui::NewFrame();
     //Render ImGui windows here.
-    myview();
-    //ImGui::ShowDemoWindow();
+    mywindow();
+    ImGui::ShowDemoWindow();
     //Rendering
     ImGui::EndFrame();
     ImGui::Render();
@@ -108,10 +109,9 @@ void *hack_thread(void *) {
 
 void *imgui_go(void *) {
     uintptr_t addr = (uintptr_t)dlsym(RTLD_NEXT, "eglSwapBuffers");
-    //MSHookFunction((void *)addr, (void *)my_eglSwapBuffers, (void **)&old_eglSwapBuffers);
     DobbyHook((void *)addr, (void *)my_eglSwapBuffers, (void **)&old_eglSwapBuffers);
-    //void *sym_input = DobbySymbolResolver(("/system/lib/libinput.so"), ("_ZN7android13InputConsumer21initializeMotionEventEPNS_11MotionEventEPKNS_12InputMessageE"));
-    //DobbyHook((void *)sym_input, (void *) my_Input, (void **)&old_Input);
+    void *sym_input = DobbySymbolResolver(("/system/lib/libinput.so"), ("_ZN7android13InputConsumer21initializeMotionEventEPNS_11MotionEventEPKNS_12InputMessageE"));
+    DobbyHook((void *)sym_input, (void *) my_Input, (void **)&old_Input);
     pthread_exit(nullptr);
 }
 
